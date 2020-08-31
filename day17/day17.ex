@@ -1,5 +1,5 @@
 defmodule Computer do
-  def compute({program, ptr, rel_base}, input \\ nil) do
+  def compute({program, ptr, rel_base}, input \\ []) do
     program[ptr]
     |> Integer.to_string()
     |> String.pad_leading(5, "0")
@@ -27,9 +27,9 @@ defmodule Computer do
     {:noop, {program, ptr + 4, rel_base}, nil}
   end
 
-  defp compute(["0", "0", c, "0", "3"], program, ptr, rel_base, input) do
+  defp compute(["0", "0", c, "0", "3"], program, ptr, rel_base, [input | tail]) do
     program = write(input, program, ptr + 1, c, rel_base)
-    {:noop, {program, ptr + 2, rel_base}, nil}
+    {:input, {program, ptr + 2, rel_base}, tail}
   end
 
   defp compute(["0", "0", c, "0", "4"], program, ptr, rel_base, _input) do
