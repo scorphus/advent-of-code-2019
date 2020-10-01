@@ -11,7 +11,13 @@ defmodule AdventOfCode2019.MixProject do
       deps: deps(),
       dialyzer: [
         plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
-      ]
+      ],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.html": :test,
+        "coveralls.json": :test
+      ],
+      test_coverage: [tool: ExCoveralls]
     ]
   end
 
@@ -25,6 +31,7 @@ defmodule AdventOfCode2019.MixProject do
     [
       {:credo, "~> 1.4.0", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
+      {:excoveralls, "~> 0.5.7", only: :test},
       {:mock, "~> 0.3.0", only: :test}
     ]
   end

@@ -21,6 +21,10 @@ jobs:
         run: mix deps.get
       - name: Run tests
         run: mix test
+      - name: Generate coverage report
+        run: mix coveralls.json
+      - name: Send coverage report to Codecov
+        run: bash <(curl -s https://codecov.io/bash)
       - name: Run static code analysis with Credo
         run: mix credo --strict
       - name: Restore Dialyzer cache
