@@ -1,4 +1,4 @@
-# 🎄 Advent of Code 2019
+# 🎄 Advent of Code 2019 [![Build Status][build-badge]][action-link]
 
 Solutions to [Advent of Code 2019] in [Elixir] 💜
 
@@ -15,6 +15,8 @@ License (BSD-3-Clause).
 
 See [LICENSE] for details.
 
+[build-badge]: https://github.com/scorphus/advent-of-code/workflows/Elixir/badge.svg
+[action-link]: https://github.com/scorphus/advent-of-code/actions?query=workflow%3AElixir
 [advent of code 2019]: https://adventofcode.com/2019/
 [elixir]: https://elixir-lang.org/
 [license]: LICENSE

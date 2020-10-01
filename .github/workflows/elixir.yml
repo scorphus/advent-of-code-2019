@@ -1,0 +1,33 @@
+name: Elixir
+on: [push, pull_request]
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Elixir
+        uses: actions/setup-elixir@v1
+        with:
+          elixir-version: "1.10.4"
+          otp-version: "23.1"
+      - name: Restore dependencies cache
+        uses: actions/cache@v2
+        with:
+          path: deps
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-
+      - name: Install dependencies
+        run: mix deps.get
+      - name: Run tests
+        run: mix test
+      - name: Run static code analysis with Credo
+        run: mix credo --strict
+      - name: Restore Dialyzer cache
+        uses: actions/cache@v2
+        with:
+          path: priv/plts
+          key: ${{ runner.os }}-dialyzer-1.10.4-23.1-${{ hashFiles('**/priv/plts/dialyzer.plt.hash') }}
+          restore-keys: ${{ runner.os }}-dialyzer-1.10.4-23.1-
+      - name: Run static analysis with Dialyzer
+        run: mix dialyzer
