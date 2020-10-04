@@ -18,15 +18,15 @@ jobs:
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
           restore-keys: ${{ runner.os }}-mix-
       - name: Install dependencies
-        run: mix deps.get
+        run: make deps
       - name: Run tests
-        run: mix test
-      - name: Generate coverage report
-        run: mix coveralls.json
-      - name: Send coverage report to Codecov
-        run: bash <(curl -s https://codecov.io/bash)
+        run: make test
+      - name: Generate coverage report and send it to Codecov
+        run: make coverage-ci
+      - name: Check code formatting
+        run: make check-format
       - name: Run static code analysis with Credo
-        run: mix credo --strict
+        run: make credo
       - name: Restore Dialyzer cache
         uses: actions/cache@v2
         with:
@@ -34,4 +34,4 @@ jobs:
           key: ${{ runner.os }}-dialyzer-1.10.4-23.1-${{ hashFiles('**/priv/plts/dialyzer.plt.hash') }}
           restore-keys: ${{ runner.os }}-dialyzer-1.10.4-23.1-
       - name: Run static analysis with Dialyzer
-        run: mix dialyzer
+        run: make dialyzer
