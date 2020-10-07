@@ -24,7 +24,8 @@ defmodule AdventOfCode2019Test do
     RocketEquation,
     TwelveOhTwoProgramAlarm,
     CrossedWires,
-    SecureContainer
+    SecureContainer,
+    SunnyWithAsteroids
   ]
 
   for {day_to_mock, i} <- Enum.with_index(@days) do
