@@ -8,6 +8,7 @@ defmodule AdventOfCode2019Test do
   doctest TwelveOhTwoProgramAlarm
   doctest CrossedWires
   doctest SecureContainer
+  doctest UniversalOrbitMap
 
   @parameters [
     {"1.1", ["12", "14", "1969", "100756"], 34_241},
@@ -25,7 +26,8 @@ defmodule AdventOfCode2019Test do
     TwelveOhTwoProgramAlarm,
     CrossedWires,
     SecureContainer,
-    SunnyWithAsteroids
+    SunnyWithAsteroids,
+    UniversalOrbitMap
   ]
 
   for {day_to_mock, i} <- Enum.with_index(@days) do

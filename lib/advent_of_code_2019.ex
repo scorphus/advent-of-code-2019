@@ -26,4 +26,6 @@ defmodule AdventOfCode2019 do
   defp run_day_part(in_stream, "4.2"), do: SecureContainer.part2(in_stream)
   defp run_day_part(in_stream, "5.1"), do: SunnyWithAsteroids.part1(in_stream)
   defp run_day_part(in_stream, "5.2"), do: SunnyWithAsteroids.part2(in_stream)
+  defp run_day_part(in_stream, "6.1"), do: UniversalOrbitMap.part1(in_stream)
+  defp run_day_part(in_stream, "6.2"), do: UniversalOrbitMap.part2(in_stream)
 end
