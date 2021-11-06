@@ -15,7 +15,8 @@ defmodule SunnyWithAsteroids do
     |> Stream.map(&load_program/1)
     |> Enum.take(1)
     |> List.first()
-    |> compute(0, system_id)
+    |> AdventOfCode2019.IntcodeComputer.compute(0, 0, [system_id])
+    |> elem(3)
   end
 
   @doc """
@@ -30,7 +31,8 @@ defmodule SunnyWithAsteroids do
     |> Stream.map(&load_program/1)
     |> Enum.take(1)
     |> List.first()
-    |> compute(0, system_id)
+    |> AdventOfCode2019.IntcodeComputer.compute(0, 0, [system_id])
+    |> elem(3)
   end
 
   @spec load_program(Enumerable.t()) :: map()
@@ -41,57 +43,5 @@ defmodule SunnyWithAsteroids do
     |> Stream.with_index()
     |> Stream.map(fn {a, b} -> {b, String.to_integer(a)} end)
     |> Map.new()
-  end
-
-  @spec compute(map(), integer(), integer()) :: integer()
-  defp compute(program, ptr, in_out) do
-    program[ptr]
-    |> Integer.to_string()
-    |> String.pad_leading(4, "0")
-    |> String.codepoints()
-    |> case do
-      [_, _, _, "9"] ->
-        in_out
-
-      [b, c, _, "1"] ->
-        result = param(program, ptr + 1, c) + param(program, ptr + 2, b)
-        compute(Map.put(program, program[ptr + 3], result), ptr + 4, in_out)
-
-      [b, c, _, "2"] ->
-        result = param(program, ptr + 1, c) * param(program, ptr + 2, b)
-        compute(Map.put(program, program[ptr + 3], result), ptr + 4, in_out)
-
-      [_, _, _, "3"] ->
-        compute(Map.put(program, program[ptr + 1], in_out), ptr + 2, in_out)
-
-      [_, c, _, "4"] ->
-        compute(program, ptr + 2, param(program, ptr + 1, c))
-
-      [b, c, _, e] ->
-        {param(program, ptr + 1, c), param(program, ptr + 2, b)}
-        |> jump_less_equal(e, program, ptr, in_out)
-    end
-  end
-
-  @spec param(map(), integer(), String.t()) :: integer()
-  defp param(program, idx, "0"), do: program[program[idx]]
-  defp param(program, idx, _), do: program[idx]
-
-  @spec jump_less_equal({integer(), integer()}, String.t(), map(), integer(), integer()) ::
-          integer()
-  defp jump_less_equal({p1, p2}, e, program, _, in_out)
-       when (e == "5" and p1 != 0) or (e == "6" and p1 == 0),
-       do: compute(program, p2, in_out)
-
-  defp jump_less_equal(_, e, program, ptr, in_out)
-       when e == "5" or e == "6",
-       do: compute(program, ptr + 3, in_out)
-
-  defp jump_less_equal({p1, p2}, e, program, ptr, in_out)
-       when (e == "7" and p1 < p2) or (e == "8" and p1 == p2),
-       do: compute(Map.put(program, program[ptr + 3], 1), ptr + 4, in_out)
-
-  defp jump_less_equal(_, _, program, ptr, in_out) do
-    compute(Map.put(program, program[ptr + 3], 0), ptr + 4, in_out)
   end
 end

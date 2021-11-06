@@ -15,10 +15,12 @@ defmodule TwelveOhTwoProgramAlarm do
       |> load_program()
       |> Map.put(1, p1)
       |> Map.put(2, p2)
-      |> compute(0)
+      |> AdventOfCode2019.IntcodeComputer.compute(0, 0)
     end)
-    |> Enum.to_list()
+    |> Enum.take(1)
     |> List.first()
+    |> elem(0)
+    |> Map.get(0)
   end
 
   @doc """
@@ -47,22 +49,6 @@ defmodule TwelveOhTwoProgramAlarm do
     |> Map.new()
   end
 
-  @spec compute(map(), integer()) :: integer()
-  defp compute(program, opcode_idx) do
-    case program[opcode_idx] do
-      1 ->
-        result = program[program[opcode_idx + 1]] + program[program[opcode_idx + 2]]
-        compute(Map.put(program, program[opcode_idx + 3], result), opcode_idx + 4)
-
-      2 ->
-        result = program[program[opcode_idx + 1]] * program[program[opcode_idx + 2]]
-        compute(Map.put(program, program[opcode_idx + 3], result), opcode_idx + 4)
-
-      99 ->
-        program[0]
-    end
-  end
-
   @spec find_pair(map(), integer(), integer(), integer()) :: integer()
   defp find_pair(program, wanted_output, noun, 100) do
     find_pair(program, wanted_output, noun + 1, 0)
@@ -80,6 +66,8 @@ defmodule TwelveOhTwoProgramAlarm do
   defp compute(program, noun, verb) do
     Map.put(program, 1, noun)
     |> Map.put(2, verb)
-    |> compute(0)
+    |> AdventOfCode2019.IntcodeComputer.compute(0, 0)
+    |> elem(0)
+    |> Map.get(0)
   end
 end

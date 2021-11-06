@@ -27,7 +27,8 @@ defmodule AdventOfCode2019Test do
     CrossedWires,
     SecureContainer,
     SunnyWithAsteroids,
-    UniversalOrbitMap
+    UniversalOrbitMap,
+    AdventOfCode2019.AmplificationCircuit
   ]
 
   for {day_to_mock, i} <- Enum.with_index(@days) do
