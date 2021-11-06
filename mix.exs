@@ -29,7 +29,7 @@ defmodule AdventOfCode2019.MixProject do
 
   defp deps do
     [
-      {:credo, "~> 1.4.0", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.5.0", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:excoveralls, "~> 0.5.7", only: :test},
       {:mock, "~> 0.3.0", only: :test}
