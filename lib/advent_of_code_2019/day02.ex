@@ -3,6 +3,8 @@ defmodule TwelveOhTwoProgramAlarm do
   Day 2 — https://adventofcode.com/2019/day/2
   """
 
+  require AdventOfCode2019.IntcodeComputer
+
   @doc """
   iex> ["1,9,10,3,2,3,11,0,99,30,40,50"] |> TwelveOhTwoProgramAlarm.part1({9, 10})
   3500
@@ -12,7 +14,7 @@ defmodule TwelveOhTwoProgramAlarm do
     in_stream
     |> Stream.map(fn line ->
       line
-      |> load_program()
+      |> AdventOfCode2019.IntcodeComputer.load_program()
       |> Map.put(1, p1)
       |> Map.put(2, p2)
       |> AdventOfCode2019.IntcodeComputer.compute(0, 0)
@@ -32,21 +34,11 @@ defmodule TwelveOhTwoProgramAlarm do
     in_stream
     |> Stream.map(fn line ->
       line
-      |> load_program()
+      |> AdventOfCode2019.IntcodeComputer.load_program()
       |> find_pair(wanted_output, 0, 0)
     end)
     |> Enum.to_list()
     |> List.first()
-  end
-
-  @spec load_program(Enumerable.t()) :: map()
-  defp load_program(line) do
-    line
-    |> String.trim()
-    |> String.split(",")
-    |> Stream.with_index()
-    |> Stream.map(fn {a, b} -> {b, String.to_integer(a)} end)
-    |> Map.new()
   end
 
   @spec find_pair(map(), integer(), integer(), integer()) :: integer()

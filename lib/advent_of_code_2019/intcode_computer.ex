@@ -6,6 +6,16 @@ defmodule AdventOfCode2019.IntcodeComputer do
   - Day 7 — https://adventofcode.com/2019/day/7
   """
 
+  @spec load_program(Enumerable.t()) :: map()
+  def load_program(line) do
+    line
+    |> String.trim()
+    |> String.split(",")
+    |> Stream.with_index()
+    |> Stream.map(fn {a, b} -> {b, String.to_integer(a)} end)
+    |> Map.new()
+  end
+
   @spec compute(map(), integer(), integer(), any | integer()) ::
           {map(), integer(), integer(), integer()}
   def compute(program, ptr, rel_base, input \\ []),

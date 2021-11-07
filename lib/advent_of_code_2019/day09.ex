@@ -3,6 +3,8 @@ defmodule AdventOfCode2019.SensorBoost do
   Day 9 — https://adventofcode.com/2019/day/9
   """
 
+  require AdventOfCode2019.IntcodeComputer
+
   @doc """
   iex> ["109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99"] |> AdventOfCode2019.SensorBoost.part1()
   99
@@ -14,7 +16,7 @@ defmodule AdventOfCode2019.SensorBoost do
   @spec part1(Enumerable.t(), integer()) :: integer()
   def part1(in_stream, system_id \\ 1) do
     in_stream
-    |> Stream.map(&load_program/1)
+    |> Stream.map(&AdventOfCode2019.IntcodeComputer.load_program/1)
     |> Enum.take(1)
     |> List.first()
     |> AdventOfCode2019.IntcodeComputer.compute(0, 0, [system_id])
@@ -32,15 +34,5 @@ defmodule AdventOfCode2019.SensorBoost do
   @spec part2(Enumerable.t()) :: integer()
   def part2(in_stream) do
     part1(in_stream, 2)
-  end
-
-  @spec load_program(Enumerable.t()) :: map()
-  defp load_program(line) do
-    line
-    |> String.trim()
-    |> String.split(",")
-    |> Stream.with_index()
-    |> Stream.map(fn {a, b} -> {b, String.to_integer(a)} end)
-    |> Map.new()
   end
 end

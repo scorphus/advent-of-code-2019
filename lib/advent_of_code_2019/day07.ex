@@ -3,6 +3,8 @@ defmodule AdventOfCode2019.AmplificationCircuit do
   Day 7 — https://adventofcode.com/2019/day/7
   """
 
+  require AdventOfCode2019.IntcodeComputer
+
   @doc """
   iex> ["3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0"]
   iex> |> AdventOfCode2019.AmplificationCircuit.part1()
@@ -18,7 +20,7 @@ defmodule AdventOfCode2019.AmplificationCircuit do
   def part1(in_stream) do
     program =
       in_stream
-      |> Stream.map(&load_program/1)
+      |> Stream.map(&AdventOfCode2019.IntcodeComputer.load_program/1)
       |> Enum.take(1)
       |> List.first()
 
@@ -42,7 +44,7 @@ defmodule AdventOfCode2019.AmplificationCircuit do
   def part2(in_stream) do
     amplifiers =
       in_stream
-      |> Stream.map(&load_program/1)
+      |> Stream.map(&AdventOfCode2019.IntcodeComputer.load_program/1)
       |> Enum.take(1)
       |> List.first()
       |> start_amplifiers(5)
@@ -50,16 +52,6 @@ defmodule AdventOfCode2019.AmplificationCircuit do
     for(i <- 5..9, do: i)
     |> permute()
     |> find_highest_signal(amplifiers, 0)
-  end
-
-  @spec load_program(Enumerable.t()) :: map()
-  defp load_program(line) do
-    line
-    |> String.trim()
-    |> String.split(",")
-    |> Stream.with_index()
-    |> Stream.map(fn {a, b} -> {b, String.to_integer(a)} end)
-    |> Map.new()
   end
 
   @spec permute(Enumerable.t()) :: Enumerable.t()
