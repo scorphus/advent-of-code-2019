@@ -32,4 +32,6 @@ defmodule AdventOfCode2019 do
   defp run_day_part(in_stream, "7.2"), do: AdventOfCode2019.AmplificationCircuit.part2(in_stream)
   defp run_day_part(in_stream, "8.1"), do: AdventOfCode2019.SpaceImageFormat.part1(in_stream)
   defp run_day_part(in_stream, "8.2"), do: AdventOfCode2019.SpaceImageFormat.part2(in_stream)
+  defp run_day_part(in_stream, "9.1"), do: AdventOfCode2019.SensorBoost.part1(in_stream)
+  defp run_day_part(in_stream, "9.2"), do: AdventOfCode2019.SensorBoost.part2(in_stream)
 end

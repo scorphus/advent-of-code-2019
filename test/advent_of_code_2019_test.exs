@@ -10,6 +10,7 @@ defmodule AdventOfCode2019Test do
   doctest SecureContainer
   doctest UniversalOrbitMap
   doctest AdventOfCode2019.SpaceImageFormat
+  doctest AdventOfCode2019.SensorBoost
 
   @parameters [
     {"1.1", ["12", "14", "1969", "100756"], 34_241},
@@ -30,7 +31,8 @@ defmodule AdventOfCode2019Test do
     SunnyWithAsteroids,
     UniversalOrbitMap,
     AdventOfCode2019.AmplificationCircuit,
-    AdventOfCode2019.SpaceImageFormat
+    AdventOfCode2019.SpaceImageFormat,
+    AdventOfCode2019.SensorBoost
   ]
 
   for {day_to_mock, i} <- Enum.with_index(@days) do

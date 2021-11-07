@@ -67,6 +67,10 @@ defmodule AdventOfCode2019.IntcodeComputer do
     {:output, {program, ptr + 2, rel_base}, read(program, ptr + 1, c, rel_base)}
   end
 
+  defp step(["0", "0", c, "0", "9"], program, ptr, rel_base, _input) do
+    {:noop, {program, ptr + 2, rel_base + read(program, ptr + 1, c, rel_base)}, nil}
+  end
+
   defp step([a, b, c, "0", e], program, ptr, rel_base, _input)
        when e == "5" or e == "6" or e == "7" or e == "8" do
     {program, ptr} =
@@ -80,7 +84,13 @@ defmodule AdventOfCode2019.IntcodeComputer do
   defp read(program, ptr, "0", _rel_base), do: Map.get(program, Map.get(program, ptr, 0), 0)
   defp read(program, ptr, "1", _rel_base), do: Map.get(program, ptr, 0)
 
+  defp read(program, ptr, "2", rel_base),
+    do: Map.get(program, rel_base + Map.get(program, ptr, 0), 0)
+
   @spec write(integer(), map(), integer, String.t(), integer()) :: map()
+  defp write(result, program, ptr, "2", rel_base),
+    do: Map.put(program, rel_base + Map.get(program, ptr, 0), result)
+
   defp write(result, program, ptr, "0", _rel_base),
     do: Map.put(program, Map.get(program, ptr, 0), result)
 
