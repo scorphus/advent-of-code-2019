@@ -13,9 +13,10 @@ defmodule AdventOfCode2019.CLI do
   end
 
   def main(args) do
+    IO.puts("Your answer is:")
+
     IO.stream(:stdio, :line)
     |> AdventOfCode2019.stream_lines(Enum.join(args, "."))
-    # credo:disable-for-next-line
-    |> IO.inspect(label: "Your answer is")
+    |> IO.puts()
   end
 end

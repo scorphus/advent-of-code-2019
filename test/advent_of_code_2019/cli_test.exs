@@ -16,12 +16,11 @@ defmodule AdventOfCode2019.CLITest do
     with_mock AdventOfCode2019,
       stream_lines: fn _in_stream, _day_part -> :ok end do
       with_mock IO,
-        inspect: fn data, _label -> data end,
+        puts: fn data -> data end,
         stream: fn _stdio, _line -> ["much", "lines"] end do
         assert AdventOfCode2019.CLI.main(["1", "2"]) == :ok
         assert_called(IO.stream(:stdio, :line))
-        # credo:disable-for-next-line
-        assert_called(IO.inspect(:ok, label: "Your answer is"))
+        assert_called(IO.puts(:ok))
         assert_called(AdventOfCode2019.stream_lines(["much", "lines"], "1.2"))
       end
     end
