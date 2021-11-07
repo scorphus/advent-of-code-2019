@@ -2,7 +2,7 @@ deps:
 	@mix deps.get
 
 setup: deps
-	@type -p pre-commit >/dev/null 2>&1 || \
+	@pre-commit --help >/dev/null 2>&1 || \
 		(echo "Please install pre-commit and try again"; exit 1)
 	@pre-commit install -f --hook-type pre-commit
 	@pre-commit install -f --hook-type pre-push
