@@ -32,7 +32,8 @@ defmodule AdventOfCode2019Test do
     UniversalOrbitMap,
     AdventOfCode2019.AmplificationCircuit,
     AdventOfCode2019.SpaceImageFormat,
-    AdventOfCode2019.SensorBoost
+    AdventOfCode2019.SensorBoost,
+    AdventOfCode2019.MonitoringStation
   ]
 
   for {day_to_mock, i} <- Enum.with_index(@days) do

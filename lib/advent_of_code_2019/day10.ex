@@ -1,50 +1,111 @@
-defmodule MonitoringStation do
-  def main do
+defmodule AdventOfCode2019.MonitoringStation do
+  @moduledoc """
+  Day 10 — https://adventofcode.com/2019/day/10
+  """
+
+  @spec part1(Enumerable.t()) :: integer()
+  def part1(in_stream) do
+    in_stream
+    |> Stream.with_index()
+    |> Stream.map(&load_belt/1)
+    |> Enum.to_list()
+    |> List.flatten()
+    |> find_max_sights()
+  end
+
+  @spec part2(Enumerable.t(), integer()) :: any()
+  def part2(in_stream, nth \\ 200) do
     {belt, row, col} =
-      load_belt(Map.new(), 0)
+      in_stream
+      |> Stream.with_index()
+      |> Stream.map(&load_belt/1)
+      |> Enum.to_list()
+      |> List.flatten()
+      |> Enum.reduce(Map.new(), &belt_map/2)
       |> find_best_location()
 
-    nth =
-      case System.argv() do
-        [nth] ->
-          String.to_integer(nth)
-
-        _ ->
-          200
-      end
-
     case vaporize_from(belt, row, col, nth) do
-      {belt, {nil, nil}} ->
-        IO.puts("All asteroids already vaporized!")
-        IO.puts("Only the laser station remains.")
-        Map.keys(belt)
-
-      {belt, {nth_row, nth_col}} ->
-        IO.puts("Answer: #{nth_row + 100 * nth_col}")
-        IO.puts("Asteroids remaining: #{length(Map.keys(belt))}")
-        Map.keys(belt)
+      {_belt, {nil, nil}} -> "All asteroids already vaporized!"
+      {_belt, {nth_row, nth_col}} -> nth_row + 100 * nth_col
     end
-    |> IO.inspect(label: "Belt after vaporization")
   end
 
-  defp load_belt(belt, row), do: load_belt(IO.gets(""), belt, row)
-
-  defp load_belt(:eof, belt, _row), do: belt
-
-  defp load_belt(line, belt, row) do
+  @spec load_belt(tuple()) :: Enumerable.t()
+  defp load_belt({line, row}) do
     String.trim(line)
     |> String.graphemes()
-    |> load_belt(belt, row, 0)
-    |> load_belt(row + 1)
+    |> load_belt([], row, 0)
   end
 
+  @spec load_belt(Enumerable.t(), Enumerable.t(), integer(), integer()) :: Enumerable.t()
   defp load_belt([], belt, _row, _col), do: belt
+
   defp load_belt(["." | tail], belt, row, col), do: load_belt(tail, belt, row, col + 1)
 
   defp load_belt(["#" | tail], belt, row, col) do
-    belt = Map.put(belt, "#{row}:#{col}", {row, col, Map.new()})
+    belt = [{row, col, MapSet.new()} | belt]
     load_belt(tail, belt, row, col + 1)
   end
+
+  ### Part 1
+
+  @spec find_max_sights(Enumerable.t()) :: integer()
+  defp find_max_sights(belt), do: find_max_sights(belt, belt, 0)
+
+  @spec find_max_sights(Enumerable.t(), Enumerable.t(), integer()) :: integer()
+  defp find_max_sights([] = _asteroids, _belt, max_sights), do: max_sights
+
+  defp find_max_sights([asteroid | tail], belt, max_sights) do
+    sights = count_sights(asteroid, belt)
+    find_max_sights(tail, belt, Enum.max([max_sights, sights]))
+  end
+
+  @spec count_sights(tuple(), Enumerable.t()) :: integer()
+  defp count_sights({_row, _col, sights}, [] = _belt), do: MapSet.size(sights)
+
+  defp count_sights({row, col, sights}, [{row, col, _sights} | tail]),
+    do: count_sights({row, col, sights}, tail)
+
+  defp count_sights({row, col, sights}, [{other_row, col, _sights} | tail])
+       when row > other_row do
+    {row, col, MapSet.put(sights, 90)}
+    |> count_sights(tail)
+  end
+
+  defp count_sights({row, col, sights}, [{_row, col, _sights} | tail]) do
+    {row, col, MapSet.put(sights, 270)}
+    |> count_sights(tail)
+  end
+
+  defp count_sights({row, col, sights}, [{other_row, other_col, _sights} | tail])
+       when col > other_col do
+    angle = angle(row, col, other_row, other_col)
+
+    {row, col, MapSet.put(sights, angle)}
+    |> count_sights(tail)
+  end
+
+  defp count_sights({row, col, sights}, [{other_row, other_col, _sights} | tail]) do
+    angle = angle(row, col, other_row, other_col)
+
+    {row, col, MapSet.put(sights, angle - 180)}
+    |> count_sights(tail)
+  end
+
+  @spec angle(integer(), integer(), integer(), integer()) :: float()
+  defp angle(row, col, other_row, other_col) do
+    ((row - other_row) / (other_col - col))
+    |> :math.atan()
+    |> degrees()
+  end
+
+  @spec degrees(float()) :: float()
+  defp degrees(radians), do: radians * 180 / :math.pi()
+
+  ### Part 2
+
+  defp belt_map({row, col, _neighbors}, belt),
+    do: Map.put(belt, "#{row}:#{col}", {row, col, Map.new()})
 
   defp find_best_location(belt), do: find_best_location({0, nil}, Map.values(belt), belt)
 
@@ -100,14 +161,6 @@ defmodule MonitoringStation do
     add_neighbors({row, col, neighbors}, tail)
   end
 
-  defp angle(row, col, other_row, other_col) do
-    ((row - other_row) / (other_col - col))
-    |> :math.atan()
-    |> degrees()
-  end
-
-  defp degrees(radians), do: radians * 180 / :math.pi()
-
   defp dist(row, col, other_row, other_col) do
     (:math.pow(row - other_row, 2) + :math.pow(col - other_col, 2))
     |> :math.sqrt()
@@ -149,7 +202,8 @@ defmodule MonitoringStation do
          _row,
          _col,
          total
-       ) when total < 2 do
+       )
+       when total < 2 do
     {_target, belt} = Map.pop!(belt, "#{target_row}:#{target_col}")
     {belt, {target_row, target_col}}
   end
@@ -178,5 +232,3 @@ defmodule MonitoringStation do
     end
   end
 end
-
-MonitoringStation.main()
