@@ -35,7 +35,8 @@ defmodule AdventOfCode2019Test do
     AdventOfCode2019.SensorBoost,
     AdventOfCode2019.MonitoringStation,
     AdventOfCode2019.SpacePolice,
-    AdventOfCode2019.TheNBodyProblem
+    AdventOfCode2019.TheNBodyProblem,
+    AdventOfCode2019.CarePackage
   ]
 
   for {day_to_mock, i} <- Enum.with_index(@days) do
