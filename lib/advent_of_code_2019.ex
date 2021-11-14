@@ -38,4 +38,6 @@ defmodule AdventOfCode2019 do
   defp run_day_part(in_stream, "10.2"), do: AdventOfCode2019.MonitoringStation.part2(in_stream)
   defp run_day_part(in_stream, "11.1"), do: AdventOfCode2019.SpacePolice.part1(in_stream)
   defp run_day_part(in_stream, "11.2"), do: AdventOfCode2019.SpacePolice.part2(in_stream)
+  defp run_day_part(in_stream, "12.1"), do: AdventOfCode2019.TheNBodyProblem.part1(in_stream)
+  defp run_day_part(in_stream, "12.2"), do: AdventOfCode2019.TheNBodyProblem.part2(in_stream)
 end
