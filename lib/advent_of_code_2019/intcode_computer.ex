@@ -5,6 +5,7 @@ defmodule AdventOfCode2019.IntcodeComputer do
   - Day 5 — https://adventofcode.com/2019/day/5
   - Day 7 — https://adventofcode.com/2019/day/7
   - Day 9 — https://adventofcode.com/2019/day/9
+  - Day 15 — https://adventofcode.com/2019/day/15
   """
 
   @spec load_program(Enumerable.t()) :: map()
