@@ -52,4 +52,7 @@ defmodule AdventOfCode2019 do
 
   defp run_day_part(in_stream, "16.2"),
     do: AdventOfCode2019.FlawedFrequencyTransmission.part2(in_stream)
+
+  defp run_day_part(in_stream, "17.1"), do: AdventOfCode2019.SetAndForget.part1(in_stream)
+  defp run_day_part(in_stream, "17.2"), do: AdventOfCode2019.SetAndForget.part2(in_stream)
 end
