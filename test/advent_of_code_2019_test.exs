@@ -38,7 +38,8 @@ defmodule AdventOfCode2019Test do
     AdventOfCode2019.TheNBodyProblem,
     AdventOfCode2019.CarePackage,
     AdventOfCode2019.SpaceStoichiometry,
-    AdventOfCode2019.OxygenSystem
+    AdventOfCode2019.OxygenSystem,
+    AdventOfCode2019.FlawedFrequencyTransmission
   ]
 
   for {day_to_mock, i} <- Enum.with_index(@days) do

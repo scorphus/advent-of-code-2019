@@ -46,4 +46,10 @@ defmodule AdventOfCode2019 do
   defp run_day_part(in_stream, "14.2"), do: AdventOfCode2019.SpaceStoichiometry.part2(in_stream)
   defp run_day_part(in_stream, "15.1"), do: AdventOfCode2019.OxygenSystem.part1(in_stream)
   defp run_day_part(in_stream, "15.2"), do: AdventOfCode2019.OxygenSystem.part2(in_stream)
+
+  defp run_day_part(in_stream, "16.1"),
+    do: AdventOfCode2019.FlawedFrequencyTransmission.part1(in_stream)
+
+  defp run_day_part(in_stream, "16.2"),
+    do: AdventOfCode2019.FlawedFrequencyTransmission.part2(in_stream)
 end
